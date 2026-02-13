@@ -1,0 +1,29 @@
+let leadermodel=require("../model/leader");
+const jwt = require("jsonwebtoken");
+
+async function auth(req, res, next) {
+  try {
+    if (req.cookies.emtoken != undefined && req.cookies.emtoken != "") {
+      const token = req.cookies.emtoken;
+      
+      const data = jwt.verify(token, "aabb");
+      let leader = await leadermodel.findOne({ email: data.token });
+      
+      if (!leader) return res.status(403).json({ msg: "leader not found" });
+      else{
+      req.leader = leader;
+      next();
+      }
+    } else {
+      console.log("Please Login First");
+    }
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({
+      error: "Internal Server Error",
+      message: err.message,
+    });
+  }
+}
+
+module.exports = auth;
