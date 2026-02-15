@@ -1,9 +1,5 @@
 let mongoose=require("mongoose");
-// exports.sportsera=()=>
-// {
-// mongo.connect("mongodb://localhost:27017/sportsera")
-// console.log('successfully connected')
-// }
+
 require('dotenv').config();
 
 const mongoUri = process.env.MONGO_URI;
@@ -25,3 +21,4 @@ sportsera.on('disconnected', () => {
 });
 
 module.exports = sportsera;
+
