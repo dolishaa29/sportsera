@@ -1,7 +1,7 @@
 let express=require("express");
 let router=express.Router();
 let auth=require("../middleware/leader");
-const { leaderregister, leaderlogin, leaderprofile } = require("../controller/leadercont");
+const { leaderregister, leaderlogin, leaderprofile , leaderupdate } = require("../controller/leadercont");
 
 const multer = require("multer");
 let upload =multer({ 
@@ -19,5 +19,6 @@ router.post("/leaderregister",leaderregister);
 router.post("/leaderlogin",leaderlogin);
 router.get("/leaderprofile",auth,leaderprofile);
 router.put("/leaderupdate",auth,leaderupdate);
+
 
 module.exports=router;
