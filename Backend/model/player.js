@@ -13,7 +13,7 @@ let playermodel=mongo.Schema({
    city:{type:String},
    interests:{type:String},
    expertise:[expertisemodel2],
-   image:{type:String},
+//    image:{type:String},
 
 });
 module.exports=mongo.model('player',playermodel);

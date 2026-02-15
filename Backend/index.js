@@ -4,9 +4,7 @@ let app=express();
 app.use(express.json()); 
 app.use(express.urlencoded({extended:true}));
 let cors=require('cors');
-
-let {sportsera}=require("./dbconnection");
-sportsera();
+const db = require('./dbconnection')
 const cookieParser = require('cookie-parser');
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname,'/public')));

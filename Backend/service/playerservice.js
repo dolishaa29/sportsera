@@ -13,9 +13,8 @@ exports.playerregister=async(req,res)=>
   let city = req.body.city;
   let expertise = req.body.expertise;
   let interests = req.body.interests;
-  let image = req.file.filename;
+  // let image = req.file.filename;
 
-  console.log("req.file---",req.file.filename);
   
   let hp = await bct.hash(password, 10);
   let exist = await rec.findOne({ email: email });
@@ -34,7 +33,7 @@ exports.playerregister=async(req,res)=>
         city: city,
         expertise: expertise,
         interests: interests,
-        image: image,
+        // image: image,
 
       });
       await record.save();
@@ -51,7 +50,7 @@ exports.playerregister=async(req,res)=>
         city: city,
         expertise: expertise,
         interests: interests,
-        image: image,
+        // image: image,
       });
       await record.save();
       return res
