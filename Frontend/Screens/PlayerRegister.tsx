@@ -6,7 +6,10 @@ import {
   ScrollView,
   StyleSheet,
   Alert,
+  Image,
+  View,
 } from "react-native";
+import { launchImageLibrary } from "react-native-image-picker";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootStackParamList } from "../navigationTypes";
 import { ExpertiseType } from "../types";
@@ -34,12 +37,23 @@ const PlayerRegister: React.FC<Props> = ({
   const [expertiseList, setExpertiseList] =
     useState<ExpertiseType[]>([]);
 
-  // Receive expertise when coming back
   useEffect(() => {
     if (route.params?.expertise) {
       setExpertiseList(route.params.expertise);
     }
   }, [route.params]);
+
+  const selectImage = () => {
+    launchImageLibrary(
+      { mediaType: "photo" },
+      (response) => {
+        if (response.assets && response.assets.length > 0) {
+          const uri = response.assets[0].uri || "";
+          setForm({ ...form, image: uri });
+        }
+      }
+    );
+  };
 
   const handleSubmit = async () => {
     if (!form.email || !form.password) {
@@ -79,18 +93,39 @@ const PlayerRegister: React.FC<Props> = ({
     <ScrollView contentContainerStyle={styles.container}>
       <Text style={styles.title}>Player Registration</Text>
 
-      {Object.keys(form).map((key) => (
-        <TextInput
-          key={key}
-          style={styles.input}
-          placeholder={key}
-          secureTextEntry={key === "password"}
-          keyboardType={key === "contact" ? "numeric" : "default"}
-          onChangeText={(text) =>
-            setForm({ ...form, [key]: text })
-          }
-        />
-      ))}
+      {/* Image Picker */}
+      <TouchableOpacity
+        style={styles.imageContainer}
+        onPress={selectImage}
+      >
+        {form.image ? (
+          <Image
+            source={{ uri: form.image }}
+            style={styles.image}
+          />
+        ) : (
+          <Text style={styles.imageText}>
+            Tap to Select Image
+          </Text>
+        )}
+      </TouchableOpacity>
+
+      {Object.keys(form)
+        .filter((key) => key !== "image")
+        .map((key) => (
+          <TextInput
+            key={key}
+            style={styles.input}
+            placeholder={key}
+            secureTextEntry={key === "password"}
+            keyboardType={
+              key === "contact" ? "numeric" : "default"
+            }
+            onChangeText={(text) =>
+              setForm({ ...form, [key]: text })
+            }
+          />
+        ))}
 
       <TouchableOpacity
         style={styles.button}
@@ -120,6 +155,25 @@ export default PlayerRegister;
 const styles = StyleSheet.create({
   container: { padding: 20 },
   title: { fontSize: 24, marginBottom: 20 },
+  imageContainer: {
+    height: 120,
+    width: 120,
+    borderRadius: 60,
+    backgroundColor: "#ddd",
+    alignSelf: "center",
+    justifyContent: "center",
+    alignItems: "center",
+    marginBottom: 20,
+    overflow: "hidden",
+  },
+  image: {
+    height: "100%",
+    width: "100%",
+  },
+  imageText: {
+    fontSize: 12,
+    textAlign: "center",
+  },
   input: {
     borderWidth: 1,
     borderColor: "#ccc",

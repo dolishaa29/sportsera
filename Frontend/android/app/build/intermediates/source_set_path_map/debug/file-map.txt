@@ -38,6 +38,7 @@ com.frontend.app-merged_res-36 C:\Users\jains\Desktop\sportsera\Frontend\android
 com.frontend.app-debug-37 C:\Users\jains\Desktop\sportsera\Frontend\android\app\src\debug\res
 com.frontend.app-main-38 C:\Users\jains\Desktop\sportsera\Frontend\android\app\src\main\res
 com.frontend.app-packaged_res-39 C:\Users\jains\Desktop\sportsera\Frontend\node_modules\react-native-gesture-handler\android\build\intermediates\packaged_res\debug
-com.frontend.app-packaged_res-40 C:\Users\jains\Desktop\sportsera\Frontend\node_modules\react-native-reanimated\android\build\intermediates\packaged_res\debug
-com.frontend.app-packaged_res-41 C:\Users\jains\Desktop\sportsera\Frontend\node_modules\react-native-safe-area-context\android\build\intermediates\packaged_res\debug
-com.frontend.app-packaged_res-42 C:\Users\jains\Desktop\sportsera\Frontend\node_modules\react-native-screens\android\build\intermediates\packaged_res\debug
+com.frontend.app-packaged_res-40 C:\Users\jains\Desktop\sportsera\Frontend\node_modules\react-native-image-picker\android\build\intermediates\packaged_res\debug
+com.frontend.app-packaged_res-41 C:\Users\jains\Desktop\sportsera\Frontend\node_modules\react-native-reanimated\android\build\intermediates\packaged_res\debug
+com.frontend.app-packaged_res-42 C:\Users\jains\Desktop\sportsera\Frontend\node_modules\react-native-safe-area-context\android\build\intermediates\packaged_res\debug
+com.frontend.app-packaged_res-43 C:\Users\jains\Desktop\sportsera\Frontend\node_modules\react-native-screens\android\build\intermediates\packaged_res\debug
