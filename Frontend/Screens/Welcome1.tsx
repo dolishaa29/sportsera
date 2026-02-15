@@ -1,22 +1,38 @@
 import React from "react";
-import { View, Text, StyleSheet, useColorScheme } from "react-native";
-
-
+import {
+  View,
+  Text,
+  StyleSheet,
+  useColorScheme,
+} from "react-native";
 
 export default function Welcome1() {
   const scheme = useColorScheme();
   const isDark = scheme === "dark";
- 
 
   return (
-    <View style={styles.container}>
+    <View
+      style={[
+        styles.container,
+        { backgroundColor: isDark ? "#000" : "#fff" },
+      ]}
+    >
       <Text
         style={[
-          styles.text,
+          styles.title,
           { color: isDark ? "#fff" : "#000" },
         ]}
       >
-        Welcome Screen 1
+        Sportsera
+      </Text>
+
+      <Text
+        style={[
+          styles.subtitle,
+          { color: isDark ? "#ccc" : "#555" },
+        ]}
+      >
+        Discover. Connect. Compete.
       </Text>
     </View>
   );
@@ -28,7 +44,15 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
-  text: {
-    fontSize: 24,
+  title: {
+    fontSize: 36,
+    fontWeight: "bold",
+    letterSpacing: 1,
+  },
+  subtitle: {
+    fontSize: 16,
+    marginTop: 15,
+    textAlign: "center",
+    paddingHorizontal: 40,
   },
 });

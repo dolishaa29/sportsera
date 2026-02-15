@@ -7,7 +7,7 @@ import {
   ViewToken,
 } from "react-native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { RootStackParamList } from "../App";
+import { RootStackParamList } from "../navigationTypes";
 
 import Welcome1 from "./Welcome1";
 import Welcome2 from "./Welcome2";

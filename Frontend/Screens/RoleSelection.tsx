@@ -1,7 +1,13 @@
 import React from "react";
-import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  StyleSheet,
+  useColorScheme,
+} from "react-native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { RootStackParamList } from "../App";
+import { RootStackParamList } from "../navigationTypes";
 
 type Props = NativeStackScreenProps<
   RootStackParamList,
@@ -9,28 +15,74 @@ type Props = NativeStackScreenProps<
 >;
 
 const RoleSelection: React.FC<Props> = ({ navigation }) => {
+  const scheme = useColorScheme();
+  const isDark = scheme === "dark";
+
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>
-        Are you a Player or Leader?
+    <View
+      style={[
+        styles.container,
+        { backgroundColor: isDark ? "#000" : "#fff" },
+      ]}
+    >
+      <Text
+        style={[
+          styles.title,
+          { color: isDark ? "#fff" : "#000" },
+        ]}
+      >
+        Choose Your Role
+      </Text>
+
+      <Text
+        style={[
+          styles.subtitle,
+          { color: isDark ? "#aaa" : "#555" },
+        ]}
+      >
+        Are you here to play or to lead?
       </Text>
 
       <TouchableOpacity
-        style={styles.button}
+        style={[
+          styles.button,
+          {
+            backgroundColor: isDark ? "#fff" : "#000",
+          },
+        ]}
         onPress={() =>
           navigation.navigate("PlayerRegister")
         }
       >
-        <Text style={styles.buttonText}>Player</Text>
+        <Text
+          style={[
+            styles.buttonText,
+            { color: isDark ? "#000" : "#fff" },
+          ]}
+        >
+          I am a Player
+        </Text>
       </TouchableOpacity>
 
       <TouchableOpacity
-        style={styles.button}
+        style={[
+          styles.buttonOutline,
+          {
+            borderColor: isDark ? "#fff" : "#000",
+          },
+        ]}
         onPress={() =>
           navigation.navigate("LeaderRegister")
         }
       >
-        <Text style={styles.buttonText}>Leader</Text>
+        <Text
+          style={[
+            styles.buttonOutlineText,
+            { color: isDark ? "#fff" : "#000" },
+          ]}
+        >
+          I am a Leader
+        </Text>
       </TouchableOpacity>
     </View>
   );
@@ -39,15 +91,41 @@ const RoleSelection: React.FC<Props> = ({ navigation }) => {
 export default RoleSelection;
 
 const styles = StyleSheet.create({
-  container: { flex: 1, justifyContent: "center", alignItems: "center" },
-  title: { fontSize: 24, marginBottom: 40 },
-  button: {
-    backgroundColor: "black",
-    padding: 15,
-    width: "80%",
-    marginBottom: 20,
-    borderRadius: 10,
-    alignItems: "center",
+  container: {
+    flex: 1,
+    justifyContent: "center",
+    paddingHorizontal: 30,
   },
-  buttonText: { color: "white", fontSize: 16 },
+  title: {
+    fontSize: 28,
+    fontWeight: "700",
+    textAlign: "center",
+    marginBottom: 10,
+  },
+  subtitle: {
+    fontSize: 16,
+    textAlign: "center",
+    marginBottom: 50,
+  },
+  button: {
+    paddingVertical: 16,
+    borderRadius: 14,
+    alignItems: "center",
+    marginBottom: 20,
+    elevation: 5,
+  },
+  buttonText: {
+    fontSize: 16,
+    fontWeight: "600",
+  },
+  buttonOutline: {
+    paddingVertical: 16,
+    borderRadius: 14,
+    alignItems: "center",
+    borderWidth: 2,
+  },
+  buttonOutlineText: {
+    fontSize: 16,
+    fontWeight: "600",
+  },
 });

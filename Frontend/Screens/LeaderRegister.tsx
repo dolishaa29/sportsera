@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Text,
   TextInput,
@@ -7,8 +7,19 @@ import {
   StyleSheet,
   Alert,
 } from "react-native";
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { RootStackParamList } from "../navigationTypes";
+import { ExpertiseType } from "../types";
 
-const LeaderRegister = () => {
+type Props = NativeStackScreenProps<
+  RootStackParamList,
+  "LeaderRegister"
+>;
+
+const LeaderRegister: React.FC<Props> = ({
+  navigation,
+  route,
+}) => {
   const [form, setForm] = useState({
     email: "",
     name: "",
@@ -20,8 +31,14 @@ const LeaderRegister = () => {
     image: "",
   });
 
-  const [expertiseName, setExpertiseName] = useState("");
-  const [expertiseDescription, setExpertiseDescription] = useState("");
+  const [expertiseList, setExpertiseList] =
+    useState<ExpertiseType[]>([]);
+
+  useEffect(() => {
+    if (route.params?.expertise) {
+      setExpertiseList(route.params.expertise);
+    }
+  }, [route.params]);
 
   const handleSubmit = async () => {
     if (!form.email || !form.password) {
@@ -32,12 +49,7 @@ const LeaderRegister = () => {
     const leaderData = {
       ...form,
       contact: Number(form.contact),
-      expertise: [
-        {
-          name: expertiseName,
-          description: expertiseDescription,
-        },
-      ],
+      expertise: expertiseList,
     };
 
     try {
@@ -57,8 +69,7 @@ const LeaderRegister = () => {
       } else {
         Alert.alert("Error", data.message || "Registration Failed");
       }
-    } catch (error) {
-      console.log(error);
+    } catch {
       Alert.alert("Error", "Server Error");
     }
   };
@@ -67,41 +78,36 @@ const LeaderRegister = () => {
     <ScrollView contentContainerStyle={styles.container}>
       <Text style={styles.title}>Leader Registration</Text>
 
-      <TextInput style={styles.input} placeholder="Email"
-        onChangeText={(text) => setForm({ ...form, email: text })} />
+      {Object.keys(form).map((key) => (
+        <TextInput
+          key={key}
+          style={styles.input}
+          placeholder={key}
+          secureTextEntry={key === "password"}
+          keyboardType={key === "contact" ? "numeric" : "default"}
+          onChangeText={(text) =>
+            setForm({ ...form, [key]: text })
+          }
+        />
+      ))}
 
-      <TextInput style={styles.input} placeholder="Name"
-        onChangeText={(text) => setForm({ ...form, name: text })} />
+      <TouchableOpacity
+        style={styles.button}
+        onPress={() =>
+          navigation.navigate("ExpertiseScreen", {
+            from: "LeaderRegister",
+          })
+        }
+      >
+        <Text style={styles.buttonText}>
+          Add Expertise ({expertiseList.length})
+        </Text>
+      </TouchableOpacity>
 
-      <TextInput style={styles.input} placeholder="Password"
-        secureTextEntry
-        onChangeText={(text) => setForm({ ...form, password: text })} />
-
-      <TextInput style={styles.input} placeholder="Address"
-        onChangeText={(text) => setForm({ ...form, address: text })} />
-
-      <TextInput style={styles.input} placeholder="Contact"
-        keyboardType="numeric"
-        onChangeText={(text) => setForm({ ...form, contact: text })} />
-
-      <TextInput style={styles.input} placeholder="City"
-        onChangeText={(text) => setForm({ ...form, city: text })} />
-
-      <TextInput style={styles.input} placeholder="Interests"
-        onChangeText={(text) => setForm({ ...form, interests: text })} />
-
-      <TextInput style={styles.input} placeholder="Profile Image URL"
-        onChangeText={(text) => setForm({ ...form, image: text })} />
-
-      <Text style={styles.subtitle}>Expertise</Text>
-
-      <TextInput style={styles.input} placeholder="Expertise Name"
-        onChangeText={setExpertiseName} />
-
-      <TextInput style={styles.input} placeholder="Expertise Description"
-        onChangeText={setExpertiseDescription} />
-
-      <TouchableOpacity style={styles.button} onPress={handleSubmit}>
+      <TouchableOpacity
+        style={styles.submitBtn}
+        onPress={handleSubmit}
+      >
         <Text style={styles.buttonText}>Register</Text>
       </TouchableOpacity>
     </ScrollView>
@@ -112,8 +118,7 @@ export default LeaderRegister;
 
 const styles = StyleSheet.create({
   container: { padding: 20 },
-  title: { fontSize: 24, marginBottom: 20, fontWeight: "600" },
-  subtitle: { fontSize: 18, marginTop: 15, marginBottom: 10 },
+  title: { fontSize: 24, marginBottom: 20 },
   input: {
     borderWidth: 1,
     borderColor: "#ccc",
@@ -128,5 +133,12 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     marginTop: 10,
   },
-  buttonText: { color: "white", fontSize: 16 },
+  submitBtn: {
+    backgroundColor: "green",
+    padding: 15,
+    alignItems: "center",
+    borderRadius: 8,
+    marginTop: 15,
+  },
+  buttonText: { color: "white" },
 });
