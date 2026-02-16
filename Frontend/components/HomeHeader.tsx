@@ -7,7 +7,7 @@ import {
   StyleSheet,
 } from "react-native";
 
-const HomeHeader = () => {
+export default function HomeHeader() {
   return (
     <View style={styles.container}>
       <Image
@@ -29,7 +29,7 @@ const HomeHeader = () => {
   );
 };
 
-export default HomeHeader;
+
 
 const styles = StyleSheet.create({
   container: {

@@ -1,7 +1,7 @@
 import React from "react";
 import { ScrollView, Image, StyleSheet } from "react-native";
 
-const StoriesBar = ({ data }: any) => {
+export default function StoriesBar({ data }: any){
   return (
     <ScrollView horizontal showsHorizontalScrollIndicator={false}>
       {data.map((item: any) => (
@@ -14,8 +14,6 @@ const StoriesBar = ({ data }: any) => {
     </ScrollView>
   );
 };
-
-export default StoriesBar;
 
 const styles = StyleSheet.create({
   story: {

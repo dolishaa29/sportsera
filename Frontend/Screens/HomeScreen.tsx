@@ -5,13 +5,13 @@ import StoriesBar from "../components/StoriesBar";
 import EventCard from "../components/EventCard";
 import PostCard from "../components/PostCard";
 
-const HomeScreen = () => {
+export default function HomeScreen() {
   const [stories, setStories] = useState<any[]>([]);
   const [events, setEvents] = useState<any[]>([]);
   const [posts, setPosts] = useState<any[]>([]);
 
   useEffect(() => {
-    // Dummy data (replace later with Mongo fetch)
+   //replace fetch
     setStories([
       { id: 1, image: "https://i.pravatar.cc/150?img=1" },
       { id: 2, image: "https://i.pravatar.cc/150?img=2" },
@@ -58,4 +58,3 @@ const HomeScreen = () => {
   );
 };
 
-export default HomeScreen;

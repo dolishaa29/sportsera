@@ -30,7 +30,7 @@ const RoleSelection: React.FC<Props> = ({ navigation }) => {
     >
       <StatusBar barStyle="light-content" />
 
-      {/* Overlay */}
+
       <View
         style={[
           styles.overlay,
