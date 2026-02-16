@@ -5,7 +5,7 @@ let expertisemodel2= new mongo.Schema({
 });
 
 let playermodel=mongo.Schema({
-   email:{type:String},
+   email:{type:String,unique:true},
    name:{type:String},
    password:{type:String},
    address:{type:String},
@@ -13,7 +13,6 @@ let playermodel=mongo.Schema({
    city:{type:String},
    interests:{type:String},
    expertise:[expertisemodel2],
-//    image:{type:String},
 
 });
 module.exports=mongo.model('player',playermodel);

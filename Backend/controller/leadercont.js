@@ -1,4 +1,4 @@
-const { leaderregister, leaderlogin } = require("../service/leaderservice")
+const { leaderregister, leaderlogin, leaderupdate } = require("../service/leaderservice")
 
 exports.leaderregister=async (req,res)=>
 {
@@ -8,4 +8,14 @@ exports.leaderregister=async (req,res)=>
 exports.leaderlogin=async (req,res)=>
 {
     await leaderlogin(req,res);
+}
+
+exports.leaderprofile=async (req,res)=>
+{
+    await leaderprofile(req,res);
+}
+
+exports.leaderupdate=async (req,res)=>
+{
+    await leaderupdate(req,res);
 }

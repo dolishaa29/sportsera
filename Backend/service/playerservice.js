@@ -13,8 +13,6 @@ exports.playerregister=async(req,res)=>
   let city = req.body.city;
   let expertise = req.body.expertise;
   let interests = req.body.interests;
-  // let image = req.file.filename;
-
   
   let hp = await bct.hash(password, 10);
   let exist = await rec.findOne({ email: email });
@@ -33,7 +31,6 @@ exports.playerregister=async(req,res)=>
         city: city,
         expertise: expertise,
         interests: interests,
-        // image: image,
 
       });
       await record.save();
@@ -50,7 +47,6 @@ exports.playerregister=async(req,res)=>
         city: city,
         expertise: expertise,
         interests: interests,
-        // image: image,
       });
       await record.save();
       return res
@@ -87,3 +83,20 @@ exports.playerlogin=async(req,res)=>
     return res.status(400).json({ success: false, msg: "player login failed" });
   } 
 }
+
+exports.playerprofile=async(req,res)=>
+{
+  let player=req.player;
+  console.log("player",player);
+  return res.status(200).json({success:true,msg:"player profile fetched",player:player});
+}
+
+exports.playerupdate=async(req,res)=>
+{
+  let player=req.player;
+  let updateddata=req.body;
+  console.log("player",player);
+  console.log("updateddata",updateddata);
+  let data=await rec.findOneAndUpdate({email:player.email},updateddata,{new:true});
+  return res.status(200).json({success:true,msg:"player profile updated",player:data});
+};

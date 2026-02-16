@@ -13,9 +13,9 @@ exports.leaderregister=async(req,res)=>
   let city = req.body.city;
   let expertise = req.body.expertise;
   let interests = req.body.interests;
-  let image = req.file.filename;
+  //let image = req.file.filename;
 
-  console.log("req.file---",req.file.filename);
+  //console.log("req.file---",req.file.filename);
   
   let hp = await bct.hash(password, 10);
   let exist = await rec.findOne({ email: email });
@@ -34,7 +34,7 @@ exports.leaderregister=async(req,res)=>
         city: city,
         expertise: expertise,
         interests: interests,
-        image: image,
+        //image: image,
 
       });
       await record.save();
@@ -51,7 +51,7 @@ exports.leaderregister=async(req,res)=>
         city: city,
         expertise: expertise,
         interests: interests,
-        image: image,
+        //image: image,
       });
       await record.save();
       return res
@@ -87,4 +87,22 @@ exports.leaderlogin=async(req,res)=>
   } else {
     return res.status(400).json({ success: false, msg: "leader login failed" });
   } 
+}
+
+exports.leaderprofile=async(req,res)=>
+{
+  let leader=req.leader;
+  console.log("leader",leader);
+  return res.status(200).json({success:true,leader:leader});
+}
+
+exports.leaderupdate=async(req,res)=>
+{
+  let leader=req.leader;
+  let updateddata=req.body;
+  console.log("updateddata",updateddata);
+  console.log("leader",leader);
+  let data=await rec.findOneAndUpdate({email:leader.email},updateddata,{new:true});
+  console.log("data",data);
+  return res.status(200).json({success:true,msg:"leader updated successfully",leader:data});
 }
