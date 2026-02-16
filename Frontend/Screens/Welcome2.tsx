@@ -4,6 +4,8 @@ import {
   Text,
   StyleSheet,
   useColorScheme,
+  ImageBackground,
+  StatusBar,
 } from "react-native";
 
 export default function Welcome2() {
@@ -11,47 +13,77 @@ export default function Welcome2() {
   const isDark = scheme === "dark";
 
   return (
-    <View
-      style={[
-        styles.container,
-        { backgroundColor: isDark ? "#000" : "#fff" },
-      ]}
+    <ImageBackground
+      source={{
+        uri: "https://images.unsplash.com/photo-1521417531039-7b4c0c1d2f55", // team sports background
+      }}
+      style={styles.background}
+      resizeMode="cover"
     >
-      <Text
-        style={[
-          styles.title,
-          { color: isDark ? "#fff" : "#000" },
-        ]}
-      >
-        Find Your Team
-      </Text>
+      <StatusBar
+        barStyle={isDark ? "light-content" : "dark-content"}
+      />
 
-      <Text
+      {/* Overlay */}
+      <View
         style={[
-          styles.subtitle,
-          { color: isDark ? "#ccc" : "#555" },
+          styles.overlay,
+          { backgroundColor: isDark ? "rgba(0,0,0,0.75)" : "rgba(0,0,0,0.6)" },
         ]}
       >
-        Join players and leaders who match your skills and interests.
-      </Text>
-    </View>
+        <View style={styles.container}>
+          <Text style={styles.title}>
+            Find Your Team
+          </Text>
+
+          <Text style={styles.subtitle}>
+            Join players and leaders who match your skills and interests.
+          </Text>
+
+          <Text style={styles.quote}>
+            "Great teams don’t just play together — they rise together."
+          </Text>
+        </View>
+      </View>
+    </ImageBackground>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
+  background: {
+    flex: 1,
+  },
+  overlay: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
   },
+  container: {
+    alignItems: "center",
+    paddingHorizontal: 30,
+  },
   title: {
-    fontSize: 28,
-    fontWeight: "600",
+    fontSize: 40,
+    fontWeight: "800",
+    color: "#ffffff",
+    textTransform: "uppercase",
+    letterSpacing: 2,
   },
   subtitle: {
-    fontSize: 16,
-    marginTop: 15,
+    fontSize: 18,
+    marginTop: 18,
     textAlign: "center",
-    paddingHorizontal: 40,
+    color: "#e0e0e0",
+    fontWeight: "500",
+    lineHeight: 24,
+  },
+  quote: {
+    fontSize: 16,
+    marginTop: 30,
+    textAlign: "center",
+    color: "#ffffff",
+    fontStyle: "italic",
+    lineHeight: 24,
+    paddingHorizontal: 20,
   },
 });

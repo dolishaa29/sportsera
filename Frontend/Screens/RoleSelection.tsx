@@ -5,6 +5,8 @@ import {
   TouchableOpacity,
   StyleSheet,
   useColorScheme,
+  ImageBackground,
+  StatusBar,
 } from "react-native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootStackParamList } from "../navigationTypes";
@@ -19,113 +21,125 @@ const RoleSelection: React.FC<Props> = ({ navigation }) => {
   const isDark = scheme === "dark";
 
   return (
-    <View
-      style={[
-        styles.container,
-        { backgroundColor: isDark ? "#000" : "#fff" },
-      ]}
+    <ImageBackground
+      source={{
+        uri: "https://images.unsplash.com/photo-1517649763962-0c623066013b", // stadium background
+      }}
+      style={styles.background}
+      resizeMode="cover"
     >
-      <Text
-        style={[
-          styles.title,
-          { color: isDark ? "#fff" : "#000" },
-        ]}
-      >
-        Choose Your Role
-      </Text>
+      <StatusBar barStyle="light-content" />
 
-      <Text
+      {/* Overlay */}
+      <View
         style={[
-          styles.subtitle,
-          { color: isDark ? "#aaa" : "#555" },
+          styles.overlay,
+          { backgroundColor: isDark ? "rgba(0,0,0,0.85)" : "rgba(0,0,0,0.65)" },
         ]}
       >
-        Are you here to play or to lead?
-      </Text>
+        <View style={styles.container}>
+          <Text style={styles.title}>
+            Choose Your Role
+          </Text>
 
-      <TouchableOpacity
-        style={[
-          styles.button,
-          {
-            backgroundColor: isDark ? "#fff" : "#000",
-          },
-        ]}
-        onPress={() =>
-          navigation.navigate("PlayerRegister")
-        }
-      >
-        <Text
-          style={[
-            styles.buttonText,
-            { color: isDark ? "#000" : "#fff" },
-          ]}
-        >
-          I am a Player
-        </Text>
-      </TouchableOpacity>
+          <Text style={styles.subtitle}>
+            Are you here to play or to lead?
+          </Text>
 
-      <TouchableOpacity
-        style={[
-          styles.buttonOutline,
-          {
-            borderColor: isDark ? "#fff" : "#000",
-          },
-        ]}
-        onPress={() =>
-          navigation.navigate("LeaderRegister")
-        }
-      >
-        <Text
-          style={[
-            styles.buttonOutlineText,
-            { color: isDark ? "#fff" : "#000" },
-          ]}
-        >
-          I am a Leader
-        </Text>
-      </TouchableOpacity>
-    </View>
+          <TouchableOpacity
+            style={styles.primaryButton}
+            activeOpacity={0.85}
+            onPress={() =>
+              navigation.navigate("PlayerRegister")
+            }
+          >
+            <Text style={styles.primaryButtonText}>
+              I am a Player
+            </Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={styles.secondaryButton}
+            activeOpacity={0.85}
+            onPress={() =>
+              navigation.navigate("LeaderRegister")
+            }
+          >
+            <Text style={styles.secondaryButtonText}>
+              I am a Leader
+            </Text>
+          </TouchableOpacity>
+
+          <Text style={styles.quote}>
+            "Teams win games. Leaders build legacies."
+          </Text>
+        </View>
+      </View>
+    </ImageBackground>
   );
 };
 
 export default RoleSelection;
 
 const styles = StyleSheet.create({
-  container: {
+  background: {
+    flex: 1,
+  },
+  overlay: {
     flex: 1,
     justifyContent: "center",
+  },
+  container: {
     paddingHorizontal: 30,
   },
   title: {
-    fontSize: 28,
-    fontWeight: "700",
+    fontSize: 34,
+    fontWeight: "900",
+    color: "#ffffff",
     textAlign: "center",
-    marginBottom: 10,
+    letterSpacing: 1.5,
+    marginBottom: 12,
+    textTransform: "uppercase",
   },
   subtitle: {
-    fontSize: 16,
+    fontSize: 17,
     textAlign: "center",
+    color: "#dddddd",
     marginBottom: 50,
   },
-  button: {
-    paddingVertical: 16,
-    borderRadius: 14,
+  primaryButton: {
+    backgroundColor: "#ffffff",
+    paddingVertical: 18,
+    borderRadius: 16,
     alignItems: "center",
     marginBottom: 20,
-    elevation: 5,
+    elevation: 8,
   },
-  buttonText: {
-    fontSize: 16,
-    fontWeight: "600",
+  primaryButtonText: {
+    fontSize: 17,
+    fontWeight: "700",
+    color: "#000000",
+    letterSpacing: 1,
   },
-  buttonOutline: {
-    paddingVertical: 16,
-    borderRadius: 14,
-    alignItems: "center",
+  secondaryButton: {
     borderWidth: 2,
+    borderColor: "#ffffff",
+    paddingVertical: 18,
+    borderRadius: 16,
+    alignItems: "center",
   },
-  buttonOutlineText: {
-    fontSize: 16,
-    fontWeight: "600",
+  secondaryButtonText: {
+    fontSize: 17,
+    fontWeight: "700",
+    color: "#ffffff",
+    letterSpacing: 1,
+  },
+  quote: {
+    marginTop: 60,
+    textAlign: "center",
+    fontSize: 14,
+    color: "#cccccc",
+    fontStyle: "italic",
+    paddingHorizontal: 20,
   },
 });

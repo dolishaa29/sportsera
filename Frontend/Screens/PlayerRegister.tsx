@@ -8,6 +8,8 @@ import {
   Alert,
   Image,
   View,
+  ImageBackground,
+  StatusBar,
 } from "react-native";
 import { launchImageLibrary } from "react-native-image-picker";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
@@ -90,110 +92,157 @@ const PlayerRegister: React.FC<Props> = ({
   };
 
   return (
-    <ScrollView contentContainerStyle={styles.container}>
-      <Text style={styles.title}>Player Registration</Text>
+    <ImageBackground
+      source={{
+        uri: "https://images.unsplash.com/photo-1546519638-68e109498ffc",
+      }}
+      style={{ flex: 1 }}
+      resizeMode="cover"
+    >
+      <StatusBar barStyle="light-content" />
 
-      {/* Image Picker */}
-      <TouchableOpacity
-        style={styles.imageContainer}
-        onPress={selectImage}
-      >
-        {form.image ? (
-          <Image
-            source={{ uri: form.image }}
-            style={styles.image}
-          />
-        ) : (
-          <Text style={styles.imageText}>
-            Tap to Select Image
+      <View style={styles.overlay}>
+        <ScrollView contentContainerStyle={styles.container}>
+          <Text style={styles.title}>
+            Player Registration
           </Text>
-        )}
-      </TouchableOpacity>
 
-      {Object.keys(form)
-        .filter((key) => key !== "image")
-        .map((key) => (
-          <TextInput
-            key={key}
-            style={styles.input}
-            placeholder={key}
-            secureTextEntry={key === "password"}
-            keyboardType={
-              key === "contact" ? "numeric" : "default"
-            }
-            onChangeText={(text) =>
-              setForm({ ...form, [key]: text })
-            }
-          />
-        ))}
+          {/* Profile Image */}
+          <TouchableOpacity
+            style={styles.imageContainer}
+            onPress={selectImage}
+            activeOpacity={0.8}
+          >
+            {form.image ? (
+              <Image
+                source={{ uri: form.image }}
+                style={styles.image}
+              />
+            ) : (
+              <Text style={styles.imageText}>
+                Upload Profile
+              </Text>
+            )}
+          </TouchableOpacity>
 
-      <TouchableOpacity
-        style={styles.button}
-        onPress={() =>
-          navigation.navigate("ExpertiseScreen", {
-            from: "PlayerRegister",
-          })
-        }
-      >
-        <Text style={styles.buttonText}>
-          Add Expertise ({expertiseList.length})
-        </Text>
-      </TouchableOpacity>
+          <View style={styles.card}>
+            {Object.keys(form)
+              .filter((key) => key !== "image")
+              .map((key) => (
+                <TextInput
+                  key={key}
+                  style={styles.input}
+                  placeholder={key.toUpperCase()}
+                  placeholderTextColor="#aaa"
+                  secureTextEntry={key === "password"}
+                  keyboardType={
+                    key === "contact" ? "numeric" : "default"
+                  }
+                  onChangeText={(text) =>
+                    setForm({ ...form, [key]: text })
+                  }
+                />
+              ))}
 
-      <TouchableOpacity
-        style={styles.submitBtn}
-        onPress={handleSubmit}
-      >
-        <Text style={styles.buttonText}>Register</Text>
-      </TouchableOpacity>
-    </ScrollView>
+            <TouchableOpacity
+              style={styles.expertiseBtn}
+              onPress={() =>
+                navigation.navigate("ExpertiseScreen", {
+                  from: "PlayerRegister",
+                })
+              }
+            >
+              <Text style={styles.buttonText}>
+                Add Expertise ({expertiseList.length})
+              </Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              style={styles.submitBtn}
+              onPress={handleSubmit}
+            >
+              <Text style={styles.buttonText}>
+                Register
+              </Text>
+            </TouchableOpacity>
+          </View>
+        </ScrollView>
+      </View>
+    </ImageBackground>
   );
 };
 
 export default PlayerRegister;
 
 const styles = StyleSheet.create({
-  container: { padding: 20 },
-  title: { fontSize: 24, marginBottom: 20 },
+  overlay: {
+    flex: 1,
+    backgroundColor: "rgba(0,0,0,0.75)",
+  },
+  container: {
+    padding: 25,
+  },
+  title: {
+    fontSize: 30,
+    fontWeight: "900",
+    color: "#fff",
+    textAlign: "center",
+    marginBottom: 25,
+    letterSpacing: 1,
+  },
   imageContainer: {
-    height: 120,
-    width: 120,
-    borderRadius: 60,
-    backgroundColor: "#ddd",
+    height: 130,
+    width: 130,
+    borderRadius: 65,
+    backgroundColor: "#222",
     alignSelf: "center",
     justifyContent: "center",
     alignItems: "center",
-    marginBottom: 20,
+    marginBottom: 25,
     overflow: "hidden",
+    borderWidth: 2,
+    borderColor: "#fff",
   },
   image: {
     height: "100%",
     width: "100%",
   },
   imageText: {
-    fontSize: 12,
-    textAlign: "center",
+    color: "#aaa",
+    fontSize: 13,
+  },
+  card: {
+    backgroundColor: "rgba(255,255,255,0.08)",
+    padding: 20,
+    borderRadius: 18,
   },
   input: {
+    backgroundColor: "rgba(255,255,255,0.1)",
+    color: "#fff",
+    padding: 14,
+    marginBottom: 15,
+    borderRadius: 12,
     borderWidth: 1,
-    borderColor: "#ccc",
-    padding: 12,
-    marginBottom: 12,
-    borderRadius: 8,
+    borderColor: "rgba(255,255,255,0.2)",
   },
-  button: {
-    backgroundColor: "black",
+  expertiseBtn: {
+    backgroundColor: "#444",
     padding: 15,
+    borderRadius: 12,
     alignItems: "center",
-    borderRadius: 8,
-    marginTop: 10,
+    marginTop: 5,
   },
   submitBtn: {
-    backgroundColor: "green",
-    padding: 15,
+    backgroundColor: "#1DB954",
+    padding: 16,
+    borderRadius: 14,
     alignItems: "center",
-    borderRadius: 8,
     marginTop: 15,
   },
-  buttonText: { color: "white" },
+  buttonText: {
+    color: "#fff",
+    fontWeight: "700",
+    fontSize: 15,
+    letterSpacing: 1,
+  },
 });

@@ -3,36 +3,27 @@ import {
   View,
   Text,
   StyleSheet,
-  useColorScheme,
+  StatusBar,
 } from "react-native";
 
 export default function Welcome1() {
-  const scheme = useColorScheme();
-  const isDark = scheme === "dark";
-
   return (
-    <View
-      style={[
-        styles.container,
-        { backgroundColor: isDark ? "#000" : "#fff" },
-      ]}
-    >
-      <Text
-        style={[
-          styles.title,
-          { color: isDark ? "#fff" : "#000" },
-        ]}
-      >
-        Sportsera
+    <View style={styles.container}>
+      <StatusBar barStyle="light-content" />
+
+      <View style={styles.brandWrapper}>
+        <View style={styles.brandLine} />
+        <Text style={styles.title}>
+          Sportsera
+        </Text>
+      </View>
+
+      <Text style={styles.subtitle}>
+        Discover. Connect. Compete.
       </Text>
 
-      <Text
-        style={[
-          styles.subtitle,
-          { color: isDark ? "#ccc" : "#555" },
-        ]}
-      >
-        Discover. Connect. Compete.
+      <Text style={styles.quote}>
+        "Champions are built when passion meets opportunity."
       </Text>
     </View>
   );
@@ -41,18 +32,46 @@ export default function Welcome1() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: "#0B0B0F", // deep premium dark
     justifyContent: "center",
     alignItems: "center",
+    paddingHorizontal: 40,
   },
+
+  brandWrapper: {
+    alignItems: "center",
+  },
+
+  brandLine: {
+    width: 40,
+    height: 4,
+    backgroundColor: "#1DB954",
+    borderRadius: 2,
+    marginBottom: 18,
+  },
+
   title: {
-    fontSize: 36,
-    fontWeight: "bold",
-    letterSpacing: 1,
+    fontSize: 34,
+    fontWeight: "800",
+    letterSpacing: 1.4,
+    color: "#FFFFFF",
   },
+
   subtitle: {
     fontSize: 16,
-    marginTop: 15,
+    marginTop: 22,
     textAlign: "center",
-    paddingHorizontal: 40,
+    color: "#D0D0D0",
+    fontWeight: "500",
+    letterSpacing: 0.8,
+  },
+
+  quote: {
+    fontSize: 14,
+    marginTop: 36,
+    textAlign: "center",
+    color: "#8E8E93",
+    fontStyle: "italic",
+    lineHeight: 22,
   },
 });

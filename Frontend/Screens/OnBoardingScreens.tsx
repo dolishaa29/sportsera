@@ -5,6 +5,7 @@ import {
   Dimensions,
   StyleSheet,
   ViewToken,
+  StatusBar,
 } from "react-native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootStackParamList } from "../navigationTypes";
@@ -24,6 +25,7 @@ type Props = NativeStackScreenProps<
 
 const OnBoardingScreens: React.FC<Props> = ({ navigation }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const flatListRef = useRef<FlatList>(null);
 
   const screens = [
     { id: "1", component: <Welcome1 /> },
@@ -40,20 +42,33 @@ const OnBoardingScreens: React.FC<Props> = ({ navigation }) => {
   );
 
   return (
-    <View style={{ flex: 1 }}>
+    <View style={styles.container}>
+      <StatusBar barStyle="light-content" />
+
       <WelcomeHeader
         onSkip={() => navigation.navigate("RoleSelection")}
       />
 
       <FlatList
+        ref={flatListRef}
         data={screens}
         horizontal
         pagingEnabled
+        bounces={false}
+        decelerationRate="fast"
+        snapToAlignment="center"
         showsHorizontalScrollIndicator={false}
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
-          <View style={{ width }}>{item.component}</View>
+          <View style={styles.slide}>
+            {item.component}
+          </View>
         )}
+        getItemLayout={(_, index) => ({
+          length: width,
+          offset: width * index,
+          index,
+        })}
         onViewableItemsChanged={onViewRef.current}
         viewabilityConfig={{
           viewAreaCoveragePercentThreshold: 50,
@@ -72,3 +87,13 @@ const OnBoardingScreens: React.FC<Props> = ({ navigation }) => {
 };
 
 export default OnBoardingScreens;
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "#000", 
+  },
+  slide: {
+    width,
+  },
+});
