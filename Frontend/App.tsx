@@ -9,6 +9,7 @@ import RoleSelection from "./Screens/RoleSelection";
 import PlayerRegister from "./Screens/PlayerRegister";
 import LeaderRegister from "./Screens/LeaderRegister";
 import ExpertiseScreen from "./Screens/ExpertiseScreen";
+import MainTabs from "./Screens/MainTabs";
 
 const Stack =
   createNativeStackNavigator<RootStackParamList>();
@@ -21,21 +22,31 @@ export default function App() {
           name="Onboarding"
           component={OnBoardingScreens}
         />
+
         <Stack.Screen
           name="RoleSelection"
           component={RoleSelection}
         />
+
         <Stack.Screen
           name="PlayerRegister"
           component={PlayerRegister}
         />
+
         <Stack.Screen
           name="LeaderRegister"
           component={LeaderRegister}
         />
+
         <Stack.Screen
           name="ExpertiseScreen"
           component={ExpertiseScreen}
+        />
+
+        {/* After login/register go here */}
+        <Stack.Screen
+          name="HomeTabs"
+          component={MainTabs}
         />
       </Stack.Navigator>
     </NavigationContainer>

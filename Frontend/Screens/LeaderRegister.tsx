@@ -10,6 +10,7 @@ import {
   View,
   ImageBackground,
   StatusBar,
+  ActivityIndicator,
 } from "react-native";
 import { launchImageLibrary } from "react-native-image-picker";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
@@ -25,6 +26,8 @@ const LeaderRegister: React.FC<Props> = ({
   navigation,
   route,
 }) => {
+  const [loading, setLoading] = useState(false);
+
   const [form, setForm] = useState({
     email: "",
     name: "",
@@ -46,15 +49,12 @@ const LeaderRegister: React.FC<Props> = ({
   }, [route.params]);
 
   const selectImage = () => {
-    launchImageLibrary(
-      { mediaType: "photo" },
-      (response) => {
-        if (response.assets && response.assets.length > 0) {
-          const uri = response.assets[0].uri || "";
-          setForm({ ...form, image: uri });
-        }
+    launchImageLibrary({ mediaType: "photo" }, (response) => {
+      if (response.assets && response.assets.length > 0) {
+        const uri = response.assets[0].uri || "";
+        setForm({ ...form, image: uri });
       }
-    );
+    });
   };
 
   const handleSubmit = async () => {
@@ -62,6 +62,8 @@ const LeaderRegister: React.FC<Props> = ({
       Alert.alert("Error", "Email and Password are required");
       return;
     }
+
+    setLoading(true);
 
     const leaderData = {
       ...form,
@@ -83,12 +85,15 @@ const LeaderRegister: React.FC<Props> = ({
 
       if (response.ok) {
         Alert.alert("Success", data.message || "Leader Registered");
+        navigation.replace("HomeTabs"); // 🔥 important
       } else {
         Alert.alert("Error", data.message || "Registration Failed");
       }
-    } catch {
+    } catch (error) {
       Alert.alert("Error", "Server Error");
     }
+
+    setLoading(false);
   };
 
   return (
@@ -107,10 +112,10 @@ const LeaderRegister: React.FC<Props> = ({
             Leader Registration
           </Text>
 
+          {/* Profile Image */}
           <TouchableOpacity
             style={styles.imageContainer}
             onPress={selectImage}
-            activeOpacity={0.8}
           >
             {form.image ? (
               <Image
@@ -160,9 +165,13 @@ const LeaderRegister: React.FC<Props> = ({
               style={styles.submitBtn}
               onPress={handleSubmit}
             >
-              <Text style={styles.buttonText}>
-                Register as Leader
-              </Text>
+              {loading ? (
+                <ActivityIndicator color="#000" />
+              ) : (
+                <Text style={styles.submitText}>
+                  Register as Leader
+                </Text>
+              )}
             </TouchableOpacity>
           </View>
         </ScrollView>
@@ -187,7 +196,6 @@ const styles = StyleSheet.create({
     color: "#fff",
     textAlign: "center",
     marginBottom: 25,
-    letterSpacing: 1,
   },
   imageContainer: {
     height: 130,
@@ -208,7 +216,6 @@ const styles = StyleSheet.create({
   },
   imageText: {
     color: "#bbb",
-    fontSize: 13,
   },
   card: {
     backgroundColor: "rgba(255,255,255,0.07)",
@@ -221,15 +228,12 @@ const styles = StyleSheet.create({
     padding: 14,
     marginBottom: 15,
     borderRadius: 12,
-    borderWidth: 1,
-    borderColor: "rgba(255,255,255,0.2)",
   },
   expertiseBtn: {
     backgroundColor: "#333",
     padding: 15,
     borderRadius: 12,
     alignItems: "center",
-    marginTop: 5,
   },
   submitBtn: {
     backgroundColor: "#FFD700",
@@ -239,9 +243,11 @@ const styles = StyleSheet.create({
     marginTop: 15,
   },
   buttonText: {
+    color: "#fff",
+    fontWeight: "700",
+  },
+  submitText: {
     color: "#000",
     fontWeight: "800",
-    fontSize: 15,
-    letterSpacing: 1,
   },
 });

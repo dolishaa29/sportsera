@@ -10,6 +10,7 @@ import {
   View,
   ImageBackground,
   StatusBar,
+  ActivityIndicator,
 } from "react-native";
 import { launchImageLibrary } from "react-native-image-picker";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
@@ -25,6 +26,8 @@ const PlayerRegister: React.FC<Props> = ({
   navigation,
   route,
 }) => {
+  const [loading, setLoading] = useState(false);
+
   const [form, setForm] = useState({
     email: "",
     name: "",
@@ -46,15 +49,12 @@ const PlayerRegister: React.FC<Props> = ({
   }, [route.params]);
 
   const selectImage = () => {
-    launchImageLibrary(
-      { mediaType: "photo" },
-      (response) => {
-        if (response.assets && response.assets.length > 0) {
-          const uri = response.assets[0].uri || "";
-          setForm({ ...form, image: uri });
-        }
+    launchImageLibrary({ mediaType: "photo" }, (response) => {
+      if (response.assets && response.assets.length > 0) {
+        const uri = response.assets[0].uri || "";
+        setForm({ ...form, image: uri });
       }
-    );
+    });
   };
 
   const handleSubmit = async () => {
@@ -62,6 +62,8 @@ const PlayerRegister: React.FC<Props> = ({
       Alert.alert("Error", "Email and Password are required");
       return;
     }
+
+    setLoading(true);
 
     const playerData = {
       ...form,
@@ -82,13 +84,16 @@ const PlayerRegister: React.FC<Props> = ({
       const data = await response.json();
 
       if (response.ok) {
-        Alert.alert("Success", data.message || "Player Registered");
+        Alert.alert("Success", data.message || "Registered");
+        navigation.replace("HomeTabs"); // 🔥 important
       } else {
-        Alert.alert("Error", data.message || "Registration Failed");
+        Alert.alert("Error", data.message || "Failed");
       }
     } catch {
       Alert.alert("Error", "Server Error");
     }
+
+    setLoading(false);
   };
 
   return (
@@ -97,7 +102,6 @@ const PlayerRegister: React.FC<Props> = ({
         uri: "https://images.unsplash.com/photo-1546519638-68e109498ffc",
       }}
       style={{ flex: 1 }}
-      resizeMode="cover"
     >
       <StatusBar barStyle="light-content" />
 
@@ -107,21 +111,14 @@ const PlayerRegister: React.FC<Props> = ({
             Player Registration
           </Text>
 
-          {/* Profile Image */}
           <TouchableOpacity
             style={styles.imageContainer}
             onPress={selectImage}
-            activeOpacity={0.8}
           >
             {form.image ? (
-              <Image
-                source={{ uri: form.image }}
-                style={styles.image}
-              />
+              <Image source={{ uri: form.image }} style={styles.image} />
             ) : (
-              <Text style={styles.imageText}>
-                Upload Profile
-              </Text>
+              <Text style={styles.imageText}>Upload Profile</Text>
             )}
           </TouchableOpacity>
 
@@ -161,9 +158,11 @@ const PlayerRegister: React.FC<Props> = ({
               style={styles.submitBtn}
               onPress={handleSubmit}
             >
-              <Text style={styles.buttonText}>
-                Register
-              </Text>
+              {loading ? (
+                <ActivityIndicator color="#fff" />
+              ) : (
+                <Text style={styles.buttonText}>Register</Text>
+              )}
             </TouchableOpacity>
           </View>
         </ScrollView>
@@ -175,20 +174,14 @@ const PlayerRegister: React.FC<Props> = ({
 export default PlayerRegister;
 
 const styles = StyleSheet.create({
-  overlay: {
-    flex: 1,
-    backgroundColor: "rgba(0,0,0,0.75)",
-  },
-  container: {
-    padding: 25,
-  },
+  overlay: { flex: 1, backgroundColor: "rgba(0,0,0,0.75)" },
+  container: { padding: 25 },
   title: {
     fontSize: 30,
     fontWeight: "900",
     color: "#fff",
     textAlign: "center",
     marginBottom: 25,
-    letterSpacing: 1,
   },
   imageContainer: {
     height: 130,
@@ -203,14 +196,8 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderColor: "#fff",
   },
-  image: {
-    height: "100%",
-    width: "100%",
-  },
-  imageText: {
-    color: "#aaa",
-    fontSize: 13,
-  },
+  image: { height: "100%", width: "100%" },
+  imageText: { color: "#aaa" },
   card: {
     backgroundColor: "rgba(255,255,255,0.08)",
     padding: 20,
@@ -222,15 +209,12 @@ const styles = StyleSheet.create({
     padding: 14,
     marginBottom: 15,
     borderRadius: 12,
-    borderWidth: 1,
-    borderColor: "rgba(255,255,255,0.2)",
   },
   expertiseBtn: {
     backgroundColor: "#444",
     padding: 15,
     borderRadius: 12,
     alignItems: "center",
-    marginTop: 5,
   },
   submitBtn: {
     backgroundColor: "#1DB954",
@@ -242,7 +226,5 @@ const styles = StyleSheet.create({
   buttonText: {
     color: "#fff",
     fontWeight: "700",
-    fontSize: 15,
-    letterSpacing: 1,
   },
 });

@@ -10,4 +10,6 @@ export type RootStackParamList = {
   ExpertiseScreen: {
     from: "PlayerRegister" | "LeaderRegister";
   };
+
+  HomeTabs: undefined; // 🔥 Add this
 };
